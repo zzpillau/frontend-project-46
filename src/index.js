@@ -15,7 +15,7 @@ import _ from 'lodash'
 // console.log('parseJSON', parseJSON(filepath1));
 
 const makeString = (data1, data2, indent = '  ') => {
-  const allKeys = _.union([...Object.keys(data1), ...Object.keys(data2)]);
+  const allKeys = _.union([...Object.keys(data1), ...Object.keys(data2)]).sort();
   // console.log(allKeys);
   // const diffInfo = {};
 
@@ -53,15 +53,15 @@ const makeString = (data1, data2, indent = '  ') => {
 
 
 
-const genFilesDiff = (filepath1, filepath2, format = 'json') => {
+const genDiff = (filepath1, filepath2, format = 'json') => {
   const parseFile1 = parseJSON(filepath1);
   const parseFile2 = parseJSON(filepath2);
-  console.log(parseFile1);
-  console.log(parseFile2);
+  // console.log(parseFile1);
+  // console.log(parseFile2);
   return makeString(parseFile1, parseFile2);
 }
 
-// console.log(genFilesDiff(filepath1, filepath2));
-export default genFilesDiff;
+// console.log(genDiff(filepath1, filepath2));
+export default genDiff;
 
 
