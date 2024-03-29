@@ -1,14 +1,15 @@
 plugins:
   - jest
 
+root: true
+
 env:
   node: true
   es2021: true
 
-root: true
 
 extends:
-  - 'airbnb-base'
+  - 'eslint-config-airbnb'
   - 'plugin:jest/recommended'
 
 parserOptions:
