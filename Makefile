@@ -7,3 +7,5 @@ fix:
 test:
 	npx jest --watchAll
 
+cover:
+	npx jest --coverage
