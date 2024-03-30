@@ -1,38 +1,10 @@
 // import path from 'path'
-import _ from 'lodash';
-import parseJSON from './parse.js';
-
-// const filepath1 = '/home/zzpillau/frontend-project-46/__fixtures__/file1.json'
-// const filepath2 = '/home/zzpillau/frontend-project-46/__fixtures__/file2.json'
-
-// const getNameAndExt = (filePath) => {
-//   const fileName = path.basename(filePath);
-//   const extName = path.extname(filePath);
-//   return {fileName, extName}
-// }
-
-// console.log('parseJSON', parseJSON(filepath1));
-
-const makeString = (data1, data2, indent = '  ') => {
-  const allKeys = _.union([...Object.keys(data1), ...Object.keys(data2)]).sort();
-  const lines = allKeys.map((key) => {
-    if (Object.hasOwn(data2, key)) {
-      if (!Object.hasOwn(data1, key)) {
-        return `${indent}+ ${key}: ${data2[key]}`;
-      }
-      return data1[key] === data2[key] ? `${indent.repeat(2)}${key}: ${data1[key]}` : `${indent}- ${key}: ${data1[key]}\n${indent}+ ${key}: ${data2[key]}`;
-    }
-    return `${indent}- ${key}: ${data1[key]}`;
-  });
-
-  return ['{', ...lines, '}'].join('\n');
-};
-
-// реализовать рекурсивный стингифай для объектов
+import parse from './parsers.js';
+import makeString from './build-string.js';
 
 const genDiff = (filepath1, filepath2) => {
-  const parseFile1 = parseJSON(filepath1);
-  const parseFile2 = parseJSON(filepath2);
+  const parseFile1 = parse(filepath1);
+  const parseFile2 = parse(filepath2);
   // console.log(parseFile1);
   // console.log(parseFile2);
   return makeString(parseFile1, parseFile2);
