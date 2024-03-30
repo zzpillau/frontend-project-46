@@ -8,7 +8,7 @@ fix:
 	npx eslint --fix .
 
 test:
-	npx jest
+	npx jest --watch
 
 test-coverage:
 	npx jest --coverage
