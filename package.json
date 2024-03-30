@@ -14,6 +14,7 @@
   "license": "ISC",
   "dependencies": {
     "commander": "^12.0.0",
+    "deps-install": "^0.2.2",
     "eslint-config-airbnb": "^19.0.4",
     "lodash": "^4.17.21"
   },
