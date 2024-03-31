@@ -9,7 +9,6 @@ const getFormat = (filePath) => path.extname(filePath).slice(1);
 
 const readFile = (filepath) => fs.readFileSync(makeAbsPath(filepath)).toString();
 
-
 const parse = (filepath) => {
   const format = getFormat(filepath);
 
@@ -21,7 +20,7 @@ const parse = (filepath) => {
     case 'yml':
       return yaml.load(readFile(filepath));
     default:
-      throw new Error(`Unknown format ${format}`);
+      throw new Error('Unknown format');
   }
 };
 
