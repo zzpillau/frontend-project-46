@@ -20,7 +20,7 @@ const parse = (filepath) => {
     case 'yml':
       return yaml.load(readFile(filepath));
     default:
-      throw new Error('Unknown format');
+      throw new Error(`Unknown format ${format}`);
   }
 };
 
