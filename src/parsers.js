@@ -1,24 +1,13 @@
-import fs from 'fs';
-import path from 'path';
 import yaml from 'js-yaml';
-import __dirname from './utils.js';
 
-const makeAbsPath = (filepath) => path.resolve(__dirname, '..', '__fixtures__', filepath);
-
-const getFormat = (filePath) => path.extname(filePath).slice(1);
-
-const readFile = (filepath) => fs.readFileSync(makeAbsPath(filepath)).toString();
-
-const parse = (filepath) => {
-  const format = getFormat(filepath);
-
+const parse = (pathToContent, format = 'json') => {
   switch (format) {
     case 'json':
-      return JSON.parse(readFile(filepath));
+      return JSON.parse(pathToContent);
     case 'yaml':
-      return yaml.load(readFile(filepath));
+      return yaml.load(pathToContent);
     case 'yml':
-      return yaml.load(readFile(filepath));
+      return yaml.load(pathToContent);
     default:
       throw new Error(`Unknown format ${format}`);
   }

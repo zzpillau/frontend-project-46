@@ -1,13 +1,15 @@
-// import path from 'path'
-import parse from './parsers.js';
 import makeString from './build-string.js';
+import prepareData from './prepareData.js';
+
+// сделать это все методами!!!
 
 const genDiff = (filepath1, filepath2) => {
-// сюда перенести путь до файла и чтение
+  const data1 = prepareData(filepath1);
+  const data2 = prepareData(filepath2);
 
-  const parseFile1 = parse(filepath1);
-  const parseFile2 = parse(filepath2);
-  return makeString(parseFile1, parseFile2); // пропустить через форматтер
+  return makeString(data1, data2); // пропустить через форматтер
 };
+
+// console.log(genDiff('file1plain.json', 'file2plain.json'));
 
 export default genDiff;
