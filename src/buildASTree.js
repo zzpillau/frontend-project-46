@@ -1,23 +1,23 @@
 import _ from 'lodash';
+// import prepareData from './prepareData.js';
 
-const makeTreeItem = (key, type, value, children = []) => (
-  {
-    key,
-    type,
-    children,
-    value,
-  });
+const makeTreeItem = (key, type, value, children = []) => ({
+  key,
+  type,
+  children,
+  value,
+});
 
 const buildASTree = (data1, data2) => {
   const keys1 = Object.keys(data1);
   const keys2 = Object.keys(data2);
-  const uniqKeys = _.union(keys1, keys2);
+  const uniqKeys = _.union(keys1, keys2).sort();
 
   const ASTree = uniqKeys.map((key) => {
     const value1 = data1[key] ?? 'null';
     const value2 = data2[key] ?? 'null';
 
-    const hasChildren = (val1, val2) => (_.isObject(val1) && _.isObject(val2));
+    const hasChildren = (val1, val2) => _.isObject(val1) && _.isObject(val2);
     if (!hasChildren(value1, value2)) {
       if (!Object.hasOwn(data1, key)) {
         // return { key, type: 'added', value: value2 };

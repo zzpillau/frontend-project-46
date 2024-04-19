@@ -1,15 +1,24 @@
-import makeString from './build-string.js';
 import prepareData from './prepareData.js';
+// import plain from './formatters/plain.js';
+import stylish from './formatters/stylish.js';
+import buildASTree from './buildASTree.js';
 
-// сделать это все методами!!!
-
-const genDiff = (filepath1, filepath2) => {
+const genDiff = (filepath1, filepath2, formatter = 'stylish') => {
   const data1 = prepareData(filepath1);
   const data2 = prepareData(filepath2);
 
-  return makeString(data1, data2); // пропустить через форматтер
+  const tree = buildASTree(data1, data2);
+
+  switch (formatter) {
+    // case 'plain':
+    //   return plain(data1, data2);
+    case 'stylish':
+      return stylish(tree);
+    default:
+      throw new Error(`Unknown ${formatter}`);
+  }
 };
 
-// console.log(genDiff('file1plain.json', 'file2plain.json'));
+// console.log(genDiff('file1.json', 'file2.json'));
 
 export default genDiff;

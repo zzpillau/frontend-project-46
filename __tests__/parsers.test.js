@@ -1,7 +1,7 @@
 import parse from '../src/parsers.js';
 
-test('parser error', () => {
+test('parser format error', () => {
   expect(() => {
-    parse('file1.doc');
+    parse('file1.ini');
   }).toThrow();
 });
