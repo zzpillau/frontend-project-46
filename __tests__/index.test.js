@@ -9,24 +9,24 @@ const setPathToFixtures = (relativePath) =>
 const getContent = (pathToContent) => fs.readFileSync(setPathToFixtures(pathToContent), 'utf-8');
 // const getFormat = (filePath) => path.extname(filePath).slice(1);
 
-const expectedPlain = 'expected-nested-stylish.txt';
-const pathToContent = setPathToFixtures(expectedPlain);
-const content = getContent(pathToContent);
+const fixture = 'expected-nested-stylish.txt';
+const pathToFixture = setPathToFixtures(fixture);
+const expected = getContent(pathToFixture);
 
 test('genDiff json', () => {
-  expect(genDiff('file1.json', 'file2.json')).toEqual(content);
+  expect(genDiff('file1.json', 'file2.json')).toEqual(expected);
 });
 
 test('genDiff yaml', () => {
-  expect(genDiff('file1.yaml', 'file2.yaml')).toEqual(content);
+  expect(genDiff('file1.yaml', 'file2.yaml')).toEqual(expected);
 });
 
 test('genDiff yml', () => {
-  expect(genDiff('file1.yml', 'file2.yml')).toEqual(content);
+  expect(genDiff('file1.yml', 'file2.yml')).toEqual(expected);
 });
 
 test('formatter error', () => {
   expect(() => {
-    genDiff('file1.yml', 'file2.yml', 'someFormatter');
+    genDiff('file1.yml', 'file2.yml', 'anotherFormatter');
   }).toThrow();
 });
