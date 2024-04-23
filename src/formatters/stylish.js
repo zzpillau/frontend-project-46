@@ -1,10 +1,4 @@
 import _ from 'lodash';
-// import buildASTree from '../buildASTree.js';
-// import prepareData from '../prepareData.js';
-
-// const ASTree = buildASTree(prepareData('file1.json'), prepareData('file2.json'));
-// console.log(ASTree);
-// console.log(JSON.stringify(ASTree, null, '  '));
 
 const mark = {
   added: '+',
@@ -14,22 +8,23 @@ const mark = {
   nested: ' ',
 };
 
-const stylish = (data, replacer = '    ', indentCount = 1) => {
+const stylish = (data, replacer = '    ') => {
   const iter = (currenData, depth) => {
     const currentIndent = (level) => replacer.repeat(level);
-    const newIndent = (diffMark) => {
+
+    const buildIndent = (diffMark) => {
       const additionalSpace = ' ';
       const typeIndent = `${diffMark}${additionalSpace}`;
       return currentIndent(depth).slice(2).concat(typeIndent);
     };
 
-    const convertValue = (values, count) => {
+    const convertValue = (values, depthLevel) => {
       if (_.isObject(values)) {
-        const objectIndent = currentIndent(count + 1);
-        const objectContent = Object.entries(values)
-          .map(([key, value]) => `${objectIndent}${key}: ${convertValue(value, count + 1)}`)
+        const valueIndent = currentIndent(depthLevel + 1);
+        const valueContent = Object.entries(values)
+          .map(([key, value]) => `${valueIndent}${key}: ${convertValue(value, depthLevel + 1)}`)
           .join('\n');
-        return `{\n${objectContent}\n${currentIndent(count)}}`;
+        return `{\n${valueContent}\n${currentIndent(depthLevel)}}`;
       }
       return `${values}`;
     };
@@ -45,28 +40,21 @@ const stylish = (data, replacer = '    ', indentCount = 1) => {
         if (type === 'changed') {
           const [valDeleted, valAdded] = value;
           const [delMark, addMark] = mark.changed;
-          const deletedStr = `${newIndent(delMark)}${key}: ${convertValue(valDeleted, depth)}`;
-          const addedStr = `${newIndent(addMark)}${key}: ${convertValue(valAdded, depth)}`;
+          const deletedStr = `${buildIndent(delMark)}${key}: ${convertValue(valDeleted, depth)}`;
+          const addedStr = `${buildIndent(addMark)}${key}: ${convertValue(valAdded, depth)}`;
           return [deletedStr, addedStr].join('\n');
         }
         // нет детей, все остальные типы added deleted unchanged
-        return `${newIndent(mark[type])}${key}: ${convertValue(value, depth)}`;
+        return `${buildIndent(mark[type])}${key}: ${convertValue(value, depth)}`;
       }
       // type nested!!! iter запускается на children, глубина увеличивается
-      const parentStr = `${newIndent(mark[type])}${key}: {`;
-      const childStr = `${iter(children, depth + 1)}`;
+      const parentStr = `${buildIndent(mark[type])}${key}: {`;
+      const childStr = `${iter(children, depth + 1)}\n${currentIndent(depth)}}`;
       return [parentStr, childStr].join('\n');
     });
-
-    const indentSize = depth * indentCount;
-    const bracketIndent = replacer.repeat(indentSize - indentCount);
-
-    return [...lines, `${bracketIndent}}`].join('\n');
+    return [...lines].join('\n');
   };
-  return `{\n${iter(data, 1)}`;
+  return `{\n${iter(data, 1)}\n}`;
 };
-
-// console.log(JSON.stringify(stylish(ASTree), null, '  '));
-// console.log(stylish(ASTree));
 
 export default stylish;

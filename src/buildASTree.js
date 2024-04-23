@@ -1,5 +1,4 @@
 import _ from 'lodash';
-// import prepareData from './prepareData.js';
 
 const makeTreeItem = (key, type, value, children = []) => ({
   key,
@@ -11,14 +10,14 @@ const makeTreeItem = (key, type, value, children = []) => ({
 const buildASTree = (data1, data2) => {
   const keys1 = Object.keys(data1);
   const keys2 = Object.keys(data2);
-  const uniqKeys = _.union(keys1, keys2).sort();
+  const uniqKeys = _.sortBy(_.union(keys1, keys2));
 
   const ASTree = uniqKeys.map((key) => {
     const value1 = data1[key] ?? 'null';
     const value2 = data2[key] ?? 'null';
 
-    const hasChildren = (val1, val2) => _.isObject(val1) && _.isObject(val2);
-    if (!hasChildren(value1, value2)) {
+    const hasChildren = _.isObject(value1) && _.isObject(value2);
+    if (!hasChildren) {
       if (!Object.hasOwn(data1, key)) {
         // return { key, type: 'added', value: value2 };
         return makeTreeItem(key, 'added', value2);
@@ -40,11 +39,5 @@ const buildASTree = (data1, data2) => {
 
   return ASTree;
 };
-
-// const data1 = prepareData('file1.json');
-// const data2 = prepareData('file2.json');
-
-// console.log('buildASTree', JSON.stringify(buildASTree(data1, data2), null, 2));
-// console.log(buildASTree(data1, data2));
 
 export default buildASTree;
