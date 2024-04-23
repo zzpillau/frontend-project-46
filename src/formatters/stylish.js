@@ -28,29 +28,21 @@ const stylish = (data, replacer = '    ') => {
       }
       return `${values}`;
     };
-    // console.log(currenData);
-    // console.log(typeof currenData, 'typeof currenData');
 
     const lines = currenData.map((node) => {
       const { key, value, type, children } = node;
-
-      // нет детей
       if (children.length === 0) {
-        // type changed
         if (type === 'changed') {
           const [valDeleted, valAdded] = value;
-          const [delMark, addMark] = mark.changed;
-          const deletedStr = `${buildIndent(delMark)}${key}: ${convertValue(valDeleted, depth)}`;
-          const addedStr = `${buildIndent(addMark)}${key}: ${convertValue(valAdded, depth)}`;
+          const deletedStr = `${buildIndent(mark.deleted)}${key}: ${convertValue(valDeleted, depth)}`;
+          const addedStr = `${buildIndent(mark.added)}${key}: ${convertValue(valAdded, depth)}`;
           return [deletedStr, addedStr].join('\n');
         }
-        // нет детей, все остальные типы added deleted unchanged
         return `${buildIndent(mark[type])}${key}: ${convertValue(value, depth)}`;
       }
-      // type nested!!! iter запускается на children, глубина увеличивается
-      const parentStr = `${buildIndent(mark[type])}${key}: {`;
-      const childStr = `${iter(children, depth + 1)}\n${currentIndent(depth)}}`;
-      return [parentStr, childStr].join('\n');
+      const parentLine = `${buildIndent(mark[type])}${key}: {`;
+      const childLine = `${iter(children, depth + 1)}\n${currentIndent(depth)}}`;
+      return [parentLine, childLine].join('\n');
     });
     return [...lines].join('\n');
   };

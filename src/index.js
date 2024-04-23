@@ -2,7 +2,7 @@ import path from 'path';
 import fs from 'fs';
 import __dirname from './utils.js';
 import parse from './parsers.js';
-import buildASTree from './buildASTree.js';
+import buildDiff from './buildDiff.js';
 import selectFormatter from './formatters/index.js';
 
 const parseContent = (relativePath) => {
@@ -19,11 +19,9 @@ const genDiff = (path1, path2, formatName = 'stylish') => {
   const content1 = parseContent(path1);
   const content2 = parseContent(path2);
 
-  const data = buildASTree(content1, content2);
+  const data = buildDiff(content1, content2);
 
   return selectFormatter(formatName, data);
 };
-
-// console.log(genDiff('file1.json', 'file2.json', plain));
 
 export default genDiff;

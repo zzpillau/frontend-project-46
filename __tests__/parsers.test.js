@@ -5,3 +5,5 @@ test('parser format error', () => {
     parse('file1.ini');
   }).toThrow();
 });
+
+// ааааа убрать юнит-тест!!!

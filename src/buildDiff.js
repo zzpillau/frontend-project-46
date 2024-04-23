@@ -7,12 +7,12 @@ const makeTreeItem = (key, type, value, children = []) => ({
   value,
 });
 
-const buildASTree = (data1, data2) => {
+const buildDiff = (data1, data2) => {
   const keys1 = Object.keys(data1);
   const keys2 = Object.keys(data2);
   const uniqKeys = _.sortBy(_.union(keys1, keys2));
 
-  const ASTree = uniqKeys.map((key) => {
+  const diff = uniqKeys.map((key) => {
     const value1 = data1[key] ?? 'null';
     const value2 = data2[key] ?? 'null';
 
@@ -34,10 +34,10 @@ const buildASTree = (data1, data2) => {
       return makeTreeItem(key, 'unchanged', value1);
     }
     // return { key, type: 'nested', children: buildASTree(value1, value2) };
-    return makeTreeItem(key, 'nested', value1, buildASTree(value1, value2));
+    return makeTreeItem(key, 'nested', value1, buildDiff(value1, value2));
   });
 
-  return ASTree;
+  return diff;
 };
 
-export default buildASTree;
+export default buildDiff;
