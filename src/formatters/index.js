@@ -3,17 +3,17 @@ import stylish from './stylish.js';
 import plain from './plain.js';
 import json from './json.js';
 
-const formatter = {
-  stylish: (data) => stylish(data),
-  plain: (data) => plain(data),
-  json: (data) => json(data),
-};
-
 const selectFormatter = (formatterName, data) => {
-  if (formatter[formatterName]) {
-    return formatter[formatterName](data);
+  switch (formatterName) {
+    case 'stylish':
+      return stylish(data);
+    case 'plain':
+      return plain(data);
+    case 'json':
+      return json(data);
+    default:
+      throw new Error(`Unknown ${formatterName}`);
   }
-  throw new Error(`Unknown ${formatterName}`);
 };
 
 export default selectFormatter;
