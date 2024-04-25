@@ -11,20 +11,21 @@ const convertValue = (value) => {
 };
 
 const buildPathToKey = (data, searchedKey, separator = '.') => {
-  const sd = (someData) =>
-    someData.reduce((acc, item) => {
+  const findKey = (currenData) =>
+    currenData.reduce((acc, item) => {
       const { key, children } = item;
       if (key !== searchedKey) {
         const hasChildren = children.length > 0;
-        if (hasChildren && !acc.includes(searchedKey)) {
-          return [key, sd(children, searchedKey)].flat();
+        const findedKey = acc.includes(searchedKey);
+        if (hasChildren && !findedKey) {
+          return [key, findKey(children, searchedKey)].flat();
         }
       } else {
         return [key];
       }
       return acc;
     }, []);
-  return sd(data).join(separator);
+  return findKey(data).join(separator);
 };
 
 const plain = (data) => {

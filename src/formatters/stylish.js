@@ -24,14 +24,14 @@ const buildIndent = (mark, depthLevel) => {
 };
 
 const convertValue = (values, depthLevel) => {
-  if (_.isObject(values)) {
-    const valueIndent = currentIndent(depthLevel + 1);
-    const valueContent = Object.entries(values)
-      .map(([key, value]) => `${valueIndent}${key}: ${convertValue(value, depthLevel + 1)}`)
-      .join('\n');
-    return `{\n${valueContent}\n${currentIndent(depthLevel)}}`;
+  if (!_.isObject(values)) {
+    return `${values}`;
   }
-  return `${values}`;
+  const valueIndent = currentIndent(depthLevel + 1);
+  const valueContent = Object.entries(values)
+    .map(([key, value]) => `${valueIndent}${key}: ${convertValue(value, depthLevel + 1)}`)
+    .join('\n');
+  return `{\n${valueContent}\n${currentIndent(depthLevel)}}`;
 };
 
 const stylish = (data) => {
