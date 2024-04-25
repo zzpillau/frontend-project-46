@@ -1,18 +1,10 @@
 import _ from 'lodash';
-import fs from 'fs';
-import path from 'path';
-import parse from './parsers.js';
-import __dirname from './utils.js';
 
-const parseContent = (relativePath) => {
-  const action = {
-    setAbsPath: () => path.resolve(__dirname, '..', '__fixtures__', relativePath),
-    readFile: () => fs.readFileSync(action.setAbsPath(), 'utf-8'),
-    getFormat: () => path.extname(relativePath).slice(1),
-  };
-
-  return parse(action.readFile(), action.getFormat());
-};
+// есть ли смысл собирать АСТ другой структуры? детей в value, children убрать?
+// ПРОВЕРЕНО: при таком варианте plain с доработкой работает, stylish ломается катастрофически.ZX
+// что-то не то на вход начинает поступать
+// принимает 1 элемент АСТ (root), ничего не возвращает, потом второй (вложенный в nested), возвращается к первому, и так по кругу.
+// результат TypeError - currentData.map не функция
 
 const makeTreeItem = (key, type, children, value = [], addedValue = []) => ({
   key,
@@ -40,10 +32,10 @@ const buildDiff = (data1, data2) => {
     };
 
     const hasChildren = _.isObject(value1) && _.isObject(value2);
-    if (hasChildren) {
-      return build.nested();
-    }
+
     switch (true) {
+      case hasChildren:
+        return build.nested();
       case !Object.hasOwn(data1, key):
         return build.added();
       case !Object.hasOwn(data2, key):
@@ -56,6 +48,4 @@ const buildDiff = (data1, data2) => {
   });
 };
 
-// console.log(buildDiff(parseContent('file1.json'), parseContent('file2.json')));
-console.log(JSON.stringify(buildDiff(parseContent('file1.json'), parseContent('file2.json'))));
 export default buildDiff;

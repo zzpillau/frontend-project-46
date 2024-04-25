@@ -24,7 +24,7 @@ test('genDiff should use stylish by default', () => {
   expect(genDiff('file1.json', 'file2.json')).toBe(getFixture('stylish.txt'));
 });
 
-test('genDiff should throw', () => {
+test('genDiff - unknown formatter - should throw', () => {
   expect(() => {
     genDiff('file1.yml', 'file2.yml', 'anotherFormatter');
   }).toThrow();

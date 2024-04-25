@@ -8,19 +8,20 @@ const diffMark = {
 };
 
 const SPACE_COUNT = 4;
-const REPLACER = ' ';
+const SPACER = ' ';
 
-const currentReplacer = REPLACER.repeat(SPACE_COUNT);
-
-const currentIndent = (depthLevel, replacer = currentReplacer) => replacer.repeat(depthLevel);
+const currentIndent = (depthLevel) => {
+  const currentSpacer = SPACER.repeat(SPACE_COUNT);
+  return currentSpacer.repeat(depthLevel);
+};
 
 const buildIndent = (mark, depthLevel) => {
   const additionalSpace = ' ';
   const typeIndent = `${mark}${additionalSpace}`;
   const indent = currentIndent(depthLevel);
-  return indent.slice(typeIndent.length).concat(typeIndent);
+  const indentLength = indent.length;
+  return typeIndent.padStart(indentLength, SPACER);
 };
-// console.log(buildIndent(diffMark.added, 1));
 
 const convertValue = (values, depthLevel) => {
   if (_.isObject(values)) {
