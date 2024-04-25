@@ -20,24 +20,6 @@ describe.each(['stylish', 'plain', 'json'])('genDiff %s formatter', (formatter) 
   });
 });
 
-// test('genDiff stylish', () => {
-//   expect(genDiff('file1.json', 'file2.json')).toEqual(expectedStylish);
-//   expect(genDiff('file1.yaml', 'file2.yaml', 'stylish')).toEqual(expectedStylish);
-//   expect(genDiff('file1.yml', 'file2.yml')).toEqual(expectedStylish);
-// });
-
-// test('genDiff plain', () => {
-//   expect(genDiff('file1.json', 'file2.json', 'plain')).toEqual(expectedPlain);
-//   expect(genDiff('file1.yaml', 'file2.yaml', 'plain')).toEqual(expectedPlain);
-//   expect(genDiff('file1.yml', 'file2.yml', 'plain')).toEqual(expectedPlain);
-// });
-
-// test('genDiff json', () => {
-//   expect(genDiff('file1.json', 'file2.json', 'json')).toEqual(expectedJson);
-//   expect(genDiff('file1.yaml', 'file2.yaml', 'json')).toEqual(expectedJson);
-//   expect(genDiff('file1.yml', 'file2.yml', 'json')).toEqual(expectedJson);
-// });
-
 test('genDiff should use stylish by default', () => {
   expect(genDiff('file1.json', 'file2.json')).toBe(getFixture('stylish.txt'));
 });

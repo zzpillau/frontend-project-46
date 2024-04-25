@@ -1,52 +1,53 @@
 import _ from 'lodash';
 
-const formatValue = (value) => {
+const convertValue = (value) => {
   if (_.isObject(value)) {
     return `[complex value]`;
   }
   if (_.isString(value)) {
-    return value === 'null' ? `${value}` : `'${value}'`;
+    return `'${value}'`;
   }
   return value;
 };
 
-const makePathToKey = (someData, someKey) =>
-  someData.reduce((acc, item) => {
-    const { key, children } = item;
-    if (key !== someKey) {
-      const hasChildren = children.length > 0;
-      if (hasChildren && !acc.includes(someKey)) {
-        return [key, makePathToKey(children, someKey)].flat();
+const buildPathToKey = (data, searchedKey, separator = '.') => {
+  const sd = (someData) =>
+    someData.reduce((acc, item) => {
+      const { key, children } = item;
+      if (key !== searchedKey) {
+        const hasChildren = children.length > 0;
+        if (hasChildren && !acc.includes(searchedKey)) {
+          return [key, sd(children, searchedKey)].flat();
+        }
+      } else {
+        return [key];
       }
-    } else {
-      return [key];
-    }
-    return acc;
-  }, []);
+      return acc;
+    }, []);
+  return sd(data).join(separator);
+};
 
 const plain = (data) => {
-  const formatPlain = (tree) => {
-    const lines = tree.flatMap((node) => {
-      const { key, value, type, children } = node;
+  const formatPlain = (ASTree) => {
+    const lines = ASTree.flatMap((node) => {
+      const { key, type, children, value, addedValue } = node;
 
-      const pathToKey = makePathToKey(data, key).join('.');
+      const pathToKey = buildPathToKey(data, key);
 
-      const formattedValue = formatValue(value);
+      const convertedValue = convertValue(value);
 
-      if (children.length === 0) {
-        if (type === 'changed') {
-          const [valDeleted, valAdded] = value;
-          return `Property '${pathToKey}' was updated. From ${formatValue(valDeleted)} to ${formatValue(valAdded)}`;
-        }
-        if (type === 'deleted') {
+      switch (type) {
+        case 'changed':
+          return `Property '${pathToKey}' was updated. From ${convertedValue} to ${convertValue(addedValue)}`;
+        case 'deleted':
           return `Property '${pathToKey}' was removed`;
-        }
-        if (type === 'added') {
-          return `Property '${pathToKey}' was added with value: ${formattedValue}`;
-        }
-        return [];
+        case 'added':
+          return `Property '${pathToKey}' was added with value: ${convertedValue}`;
+        case 'nested':
+          return formatPlain(children);
+        default:
+          return [];
       }
-      return formatPlain(children);
     });
     return [...lines].join('\n');
   };
