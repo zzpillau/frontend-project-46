@@ -34,7 +34,7 @@ const plain = (data) => {
     });
     return [...lines].join('\n');
   };
-  return `${iter(data)}\n`;
+  return iter(data);
 };
 
 export default plain;
