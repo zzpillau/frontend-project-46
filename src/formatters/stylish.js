@@ -58,7 +58,7 @@ const stylish = (data) => {
     });
     return [...lines].join('\n');
   };
-  return `{\n${iter(data, 1)}\n}\n`;
+  return `{\n${iter(data, 1)}\n}`;
 };
 
 export default stylish;
