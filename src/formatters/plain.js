@@ -2,7 +2,7 @@ import _ from 'lodash';
 
 const convertValue = (value) => {
   if (_.isObject(value)) {
-    return `[complex value]`;
+    return '[complex value]';
   }
   if (_.isString(value)) {
     return `'${value}'`;
@@ -13,8 +13,9 @@ const convertValue = (value) => {
 const plain = (data) => {
   const iter = (currenData, currentKeyName = '') => {
     const lines = currenData.flatMap((node) => {
-      const { key, type, children, value, modifiedValue } = node;
-
+      const {
+        key, type, children, value, modifiedValue,
+      } = node;
       const pathToKey = `${currentKeyName}${key}`;
 
       const convertedValue = convertValue(value);

@@ -37,7 +37,9 @@ const convertValue = (values, depthLevel) => {
 const stylish = (data) => {
   const iter = (currenData, depth) => {
     const lines = currenData.map((node) => {
-      const { key, type, children, value, modifiedValue } = node;
+      const {
+        key, type, children, value, modifiedValue,
+      } = node;
 
       const build = {
         deletedLine: `${buildIndent(diffMark.deleted, depth)}${key}: ${convertValue(value, depth)}`,
