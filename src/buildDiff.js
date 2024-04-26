@@ -1,11 +1,11 @@
 import _ from 'lodash';
 
-const makeTreeItem = (key, type, children, value = [], addedValue = []) => ({
+const makeTreeItem = (key, type, children, value = [], modifiedValue = []) => ({
   key,
   type,
   children,
   value,
-  addedValue,
+  modifiedValue,
 });
 
 const getKeys = (obj) => _.keys(obj);

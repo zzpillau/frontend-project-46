@@ -37,11 +37,11 @@ const convertValue = (values, depthLevel) => {
 const stylish = (data) => {
   const iter = (currenData, depth) => {
     const lines = currenData.map((node) => {
-      const { key, type, children, value, addedValue } = node;
+      const { key, type, children, value, modifiedValue } = node;
 
       const build = {
         deletedLine: `${buildIndent(diffMark.deleted, depth)}${key}: ${convertValue(value, depth)}`,
-        addedLine: `${buildIndent(diffMark.added, depth)}${key}: ${convertValue(addedValue, depth)}`,
+        modifiedLine: `${buildIndent(diffMark.added, depth)}${key}: ${convertValue(modifiedValue, depth)}`,
         rootLine: `${buildIndent(diffMark[type], depth)}${key}: {`,
         childLine: `${iter(children, depth + 1)}\n${currentIndent(depth)}}`,
         defaultLine: `${buildIndent(diffMark[type], depth)}${key}: ${convertValue(value, depth)}`,
@@ -49,7 +49,7 @@ const stylish = (data) => {
 
       switch (type) {
         case 'changed':
-          return [build.deletedLine, build.addedLine].join('\n');
+          return [build.deletedLine, build.modifiedLine].join('\n');
         case 'nested':
           return [build.rootLine, build.childLine].join('\n');
         default:
@@ -58,7 +58,7 @@ const stylish = (data) => {
     });
     return [...lines].join('\n');
   };
-  return `{\n${iter(data, 1)}\n}`;
+  return `{\n${iter(data, 1)}\n}\n`;
 };
 
 export default stylish;

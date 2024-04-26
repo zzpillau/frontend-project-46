@@ -9,7 +9,7 @@ const getFixture = (relativePath) => {
 };
 
 describe.each(['stylish', 'plain', 'json'])('genDiff %s formatter', (formatter) => {
-  const expected = getFixture(`${formatter}.txt`);
+  const expected = getFixture(`result_${formatter}.txt`);
   test.each(['json', 'yaml', 'yml'])('%s format', (format) => {
     const path1 = `file1.${format}`;
     const path2 = `file2.${format}`;
@@ -21,7 +21,7 @@ describe.each(['stylish', 'plain', 'json'])('genDiff %s formatter', (formatter) 
 });
 
 test('genDiff should use stylish by default', () => {
-  expect(genDiff('file1.json', 'file2.json')).toBe(getFixture('stylish.txt'));
+  expect(genDiff('file1.json', 'file2.json')).toBe(getFixture('result_stylish.txt'));
 });
 
 test('genDiff - unknown formatter - should throw', () => {
