@@ -34,33 +34,33 @@ const convertValue = (values, depthLevel) => {
   return `{\n${valueContent}\n${currentIndent(depthLevel)}}`;
 };
 
-const stylish = (data) => {
+const stylish = (diffTree) => {
   const iter = (currenData, depth) => {
     const lines = currenData.map((node) => {
       const {
-        key, type, children, value, modifiedValue,
+        key, children, type, value, deletedValue, addedValue,
       } = node;
 
       const build = {
-        deletedLine: `${buildIndent(diffMark.deleted, depth)}${key}: ${convertValue(value, depth)}`,
-        modifiedLine: `${buildIndent(diffMark.added, depth)}${key}: ${convertValue(modifiedValue, depth)}`,
-        rootLine: `${buildIndent(diffMark[type], depth)}${key}: {`,
-        childLine: `${iter(children, depth + 1)}\n${currentIndent(depth)}}`,
         defaultLine: `${buildIndent(diffMark[type], depth)}${key}: ${convertValue(value, depth)}`,
+        deletedLine: `${buildIndent(diffMark.deleted, depth)}${key}: ${convertValue(deletedValue, depth)}`,
+        addedLine: `${buildIndent(diffMark.added, depth)}${node.key}: ${convertValue(addedValue, depth)}`,
+        rootLine: `${buildIndent(diffMark[type], depth)}${key}: {`,
+        childLine: (descendants) => `${iter(descendants, depth + 1)}\n${currentIndent(depth)}}`,
       };
 
       switch (type) {
         case 'changed':
-          return [build.deletedLine, build.modifiedLine].join('\n');
+          return [build.deletedLine, build.addedLine].join('\n');
         case 'nested':
-          return [build.rootLine, build.childLine].join('\n');
+          return [build.rootLine, build.childLine(children)].join('\n');
         default:
           return build.defaultLine;
       }
     });
     return [...lines].join('\n');
   };
-  return `{\n${iter(data, 1)}\n}`;
+  return `{\n${iter(diffTree, 1)}\n}`;
 };
 
 export default stylish;

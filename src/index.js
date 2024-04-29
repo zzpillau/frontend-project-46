@@ -19,9 +19,9 @@ const genDiff = (path1, path2, formatName = 'stylish') => {
   const content1 = parseContent(path1);
   const content2 = parseContent(path2);
 
-  const data = buildDiff(content1, content2);
+  const diffTree = buildDiff(content1, content2);
 
-  return selectFormatter(formatName, data);
+  return selectFormatter(formatName, diffTree);
 };
 
 export default genDiff;

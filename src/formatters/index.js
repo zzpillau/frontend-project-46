@@ -3,14 +3,14 @@ import stylish from './stylish.js';
 import plain from './plain.js';
 import json from './json.js';
 
-const selectFormatter = (formatterName, data) => {
+const selectFormatter = (formatterName, diffTree) => {
   switch (formatterName) {
     case 'stylish':
-      return stylish(data);
+      return stylish(diffTree);
     case 'plain':
-      return plain(data);
+      return plain(diffTree);
     case 'json':
-      return json(data);
+      return json(diffTree);
     default:
       throw new Error(`Unknown ${formatterName}`);
   }
