@@ -14,7 +14,7 @@ const plain = (diffTree) => {
   const iter = (currenData, currentKeyName = '') => {
     const lines = currenData.flatMap((node) => {
       const {
-        key, children, value, type,
+        key, children, value, deletedValue, addedValue, type,
       } = node;
       const pathToKey = `${currentKeyName}${key}`;
 
@@ -22,7 +22,7 @@ const plain = (diffTree) => {
 
       switch (type) {
         case 'changed':
-          return `Property '${pathToKey}' was updated. From ${convertValue(node.deletedValue)} to ${convertValue(node.addedValue)}`;
+          return `Property '${pathToKey}' was updated. From ${convertValue(deletedValue)} to ${convertValue(addedValue)}`;
         case 'deleted':
           return `Property '${pathToKey}' was removed`;
         case 'added':

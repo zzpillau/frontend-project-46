@@ -38,7 +38,7 @@ const stylish = (diffTree) => {
   const iter = (currenData, depth) => {
     const lines = currenData.map((node) => {
       const {
-        key, children, type, value, deletedValue, addedValue,
+        key, children, value, deletedValue, addedValue, type,
       } = node;
 
       const build = {
